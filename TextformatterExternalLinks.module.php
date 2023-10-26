@@ -24,27 +24,36 @@ class TextformatterExternalLinks extends Textformatter implements ConfigurableMo
     parent::__construct();
   }
 
+  /**
+   * Format
+   * loop trough links array and replace old link with new one
+   */
   public function format(&$value) {
-
     $links = $this->find_external_links($value);
     if (!$links) return $value;
-
-    $replace = "<a target='_blank' rel='nofollow noopener noreferrer'";
     foreach ($links as $link) {
-      $value = str_replace("<a", $replace, $value);
+      $value = str_replace($link[0], $link[1], $value);
     }
   }
 
+  /**
+   * Find all external links
+   * saved them in array as [$old_link => $new_link]
+   */
   public function find_external_links($value) {
     // find all external links using regex in $value
     $pattern = '/<a\s+(?![^>]*\btarget=["\']_blank["\'])[^>]*\bhref=["\'](https?:\/\/[^"\']+)["\'][^>]*>/i';
     preg_match_all($pattern, $value, $matches);
     if (empty($matches[0])) return;
     $links = [];
+    $replace = "<a target='_blank' rel='nofollow noopener noreferrer'";
     foreach ($matches as $match) {
       // ifmatch starts with <a
       if (substr($match[0], 0, 2) == "<a") {
-        $links[] = $match[0];
+        $links[] = [
+          0 => $match[0],
+          1 => str_replace("<a", $replace, $match[0]),
+        ];
       }
     }
     return $links;
