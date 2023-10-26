@@ -43,16 +43,19 @@ class TextformatterExternalLinks extends Textformatter implements ConfigurableMo
   public function find_external_links($value) {
     // find all external links using regex in $value
     $pattern = '/<a\s+(?![^>]*\btarget=["\']_blank["\'])[^>]*\bhref=["\'](https?:\/\/[^"\']+)["\'][^>]*>/i';
+    // $pattern = '/<a[^>]*\bhref=["\'](https?:\/\/[^"\']+)["\'](?!.*\btarget=["\']_blank["\'])[^\r\n<>]*<\/a>/i';
+
     preg_match_all($pattern, $value, $matches);
     if (empty($matches[0])) return;
+    d($matches[0]);
     $links = [];
     $replace = "<a target='_blank' rel='nofollow noopener noreferrer'";
-    foreach ($matches as $match) {
+    foreach ($matches[0] as $match) {
       // ifmatch starts with <a
-      if (substr($match[0], 0, 2) == "<a") {
+      if (substr($match, 0, 2) == "<a") {
         $links[] = [
-          0 => $match[0],
-          1 => str_replace("<a", $replace, $match[0]),
+          0 => $match,
+          1 => str_replace("<a", $replace, $match),
         ];
       }
     }
