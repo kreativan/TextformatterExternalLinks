@@ -16,7 +16,7 @@ class TextformatterExternalLinks extends Textformatter implements ConfigurableMo
       'version' => 100,
       'summary' => 'Add "_blank" and "nofollow" attributes to all external links',
       'author' => 'Ivan Milincic',
-      'href' => '',
+      'href' => 'https://github.com/kreativan/TextformatterExternalLinks',
     );
   }
 
