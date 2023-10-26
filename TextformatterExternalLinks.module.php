@@ -47,7 +47,6 @@ class TextformatterExternalLinks extends Textformatter implements ConfigurableMo
 
     preg_match_all($pattern, $value, $matches);
     if (empty($matches[0])) return;
-    d($matches[0]);
     $links = [];
     $replace = "<a target='_blank' rel='nofollow noopener noreferrer'";
     foreach ($matches[0] as $match) {
